@@ -2,7 +2,7 @@ from azure.cognitiveservices.vision.customvision.training import CustomVisionTra
 from azure.cognitiveservices.vision.customvision.training.models import ImageFileCreateEntry, Region
 from msrest.authentication import ApiKeyCredentials
 import json
-import csv
+
 
 with open('config.json') as config_file:
     data = json.load(config_file)
@@ -13,7 +13,6 @@ with open('config.json') as config_file:
 
 
 ENDPOINT = data['endpoint']
-
 # Replace with a valid key
 training_key = data['training_key']
 prediction_key = data['prediction_key']
@@ -30,17 +29,11 @@ obj_detection_domain = next(domain for domain in trainer.get_domains() if domain
 
 # Create a new project
 print ("Creating project...")
-project = trainer.create_project("ManTech Vehicle Demo", domain_id=obj_detection_domain.id)
+project = trainer.create_project(data["project_name"] ,domain_id=obj_detection_domain.id)
+vehicle_tag = trainer.create_tag(project.id, data["tag"])
+print("New project created")
 
 
-
-vehicle_tag = trainer.create_tag(project.id, "vehicle")
-csv_file = data['csv']
-
-with open(csv_file, mode='r') as values:
-    csv_reader = csv.DictReader(csv_file)
-    for row in csv_reader:
-         print(f'Column names are {", ".join(row)}')
 
 
 
