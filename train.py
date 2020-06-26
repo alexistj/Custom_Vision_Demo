@@ -69,17 +69,26 @@ with open(csv_file, 'r',encoding='utf-8' ) as csv_f:
         url = vehicle_regions[image][0]['url']
         try:
             response = requests.get(url)
-            print('recieved')
         except:
             print("error retrieving image: "+url)
             continue
-        img = Image.open(BytesIO(response.content))
         regions =  []
         region_count =0
         for region in vehicle_regions[image]:
             if region_count >= 200:
                 break
-            regions.append( Region(tag_id=tags[0].id, left=float(region['coordinates']['x']),top=float(region['coordinates']['y']),  width=float(region['coordinates']['w']),height=float(region['coordinates']['h']))   )
+
+            img = Image.open(BytesIO(response.content))
+            width = img.size[0]
+            height = img.size[1]
+
+            #normalize region coordinates
+            x = float((region['coordinates']['x']/width))
+            y = float((region['coordinates']['y']/height))
+            w = float((region['coordinates']['w']/width))
+            h = float((region['coordinates']['h']/height))
+
+            regions.append( Region(tag_id=tags[0].id, left=x, top=y, width=w, height=h)   )
             region_count+=1
         tagged_images_with_regions.append(ImageFileCreateEntry(name=image, contents=response.content, regions=regions))
       
