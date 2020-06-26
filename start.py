@@ -13,7 +13,6 @@ with open('config.json') as config_file:
 
 
 ENDPOINT = data['endpoint']
-# Replace with a valid key
 training_key = data['training_key']
 prediction_key = data['prediction_key']
 prediction_resource_id = data['prediction_resource_id']
