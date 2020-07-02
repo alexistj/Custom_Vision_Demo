@@ -4,6 +4,7 @@ from msrest.authentication import ApiKeyCredentials
 import json
 
 
+
 with open('config.json') as config_file:
     data = json.load(config_file)
 

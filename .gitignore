@@ -2,3 +2,7 @@
 *.csv
 *.log
 *.vs
+bin/
+lib/
+__pycache__/
+venv/
