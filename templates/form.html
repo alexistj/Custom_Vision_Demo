@@ -17,21 +17,26 @@
             <label for="URL">URL:</label>
                 <input  class="form-control" type="text" name="URL"  placeholder="Enter URL for quick test"><br>
             </div>
+             <label for="file_name">File name:</label>
+                <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for quick test results "><br>
+            </div>
             <input type="submit" value="Submit">
           </form>
+
+
+
+          
+        <h1>Upload new File</h1>
+        <form action="/form-handler-batch" method="POST" enctype="multipart/form-data">
+            <input type=file name=file>
+            <label for="file_name">File name:</label>
+             <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for quick test results "><br>
+             <input type=submit >
+        </form>
     </body>
 
 
-   <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroupFileAddon01">Upload text file with URLs for batch test</span>
-      </div>
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="inputGroupFile01"
-          aria-describedby="inputGroupFileAddon01">
-        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-      </div>
-    </div>
+
 
     <!-- minimal styling -->
     <style>
