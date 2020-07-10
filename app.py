@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory, safe_join, abort
 from prediction import *
 import json
 from PIL import Image
@@ -52,13 +52,14 @@ def handle_data():
     print(js_res)
 
     
-    
-    response = app.response_class(
-        response=json.dumps(js_res),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    f = open("request/"+file_name+".json", "w")
+    f.write(json.dumps(js_res))
+
+
+    try:
+        return send_from_directory("request/",filename=file_name+".json", as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
     
 
 
@@ -90,12 +91,13 @@ def handle_data_batch():
     print(js_res)
 
     
-    
-    response = app.response_class(
-        response=js_res,
-        status=200,
-        mimetype='application/json'
-    )
-    return response
+    f = open("request/"+file_name+".json", "w")
+    f.write(str(js_res))
+
+
+    try:
+        return send_from_directory("request/",filename=file_name+".json", as_attachment=True)
+    except FileNotFoundError:
+        abort(404)
     
 

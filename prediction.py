@@ -32,6 +32,8 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
 
     # Open the sample image and get back the prediction results.
     results = predictor.detect_image(project.id, publish_iteration_name, img)
+   
+
 
     # Display the results.  
     js_res = defaultdict(list)
@@ -48,7 +50,7 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
         x = json.dumps(x)
         js_res[prediction.tag_name].append(x)
         
-     
+   
     return js_res
    
 
@@ -63,6 +65,7 @@ def getPredictionBatch(ENDPOINT, publish_iteration_name, prediction_key, predict
 
 
     res_batch ={}
+    js_res = {}
 
 
     #Retrieve the object dection project and its tags
@@ -87,7 +90,7 @@ def getPredictionBatch(ENDPOINT, publish_iteration_name, prediction_key, predict
         results = predictor.detect_image(project.id, publish_iteration_name, response.content)
 
         # Display the results.  
-        js_res = defaultdict(list)
+        js_res["vehicle"] = []
         for prediction in results.predictions:
         
             x = {
@@ -102,7 +105,7 @@ def getPredictionBatch(ENDPOINT, publish_iteration_name, prediction_key, predict
             js_res[prediction.tag_name].append(x)
         res_batch[name] = js_res
     
-    res_batch = res_batch
+  
 
     return res_batch
 

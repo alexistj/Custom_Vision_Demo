@@ -3,15 +3,35 @@
 <html>
 
     <head>
-  <title>Bootstrap Example</title>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <style>
+    h1 {text-align: center;}
+    h4 {text-align: center;}
+    p {text-align: center;}
+    img {
+  opacity: 0.5;
+}
+img:hover {
+  opacity: 1.0;
+}
+   </style>
+  
+  
   </head>
 
     <body>
+            <a href = "https://www.mantech.com/" target = "_self"> 
+          <img src="{{url_for('static', filename='manTechLogo.png')}}" height="15%" width="20%" />
+          </a>
+            <h1>Vehicle Object Detector </h1>
+
+     
         <form action="/form-handler" method="POST">
             <div class="form-group">
             <label for="URL">URL:</label>
@@ -26,13 +46,21 @@
 
 
           
-        <h1>Upload new File</h1>
+        
         <form action="/form-handler-batch" method="POST" enctype="multipart/form-data">
-            <input type=file name=file>
+           <label for="file">Upload New File:</label>
+           <input type=file name=file>
             <label for="file_name">File name:</label>
              <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for quick test results "><br>
              <input type=submit >
         </form>
+             
+        <p><a href = "https://azure.microsoft.com/en-us/services/search/?&OCID=AID2100131_SEM_XvI@XAAABEwD4jMh:20200710183334:s&msclkid=dfee72e3fcf6154c5a562deb488de809&ef_id=XvI@XAAABEwD4jMh:20200710183334:s&dclid=CNDo8qCpw-oCFRSswAodh1IMTg" target = "_self"> 
+        
+        <img src="{{url_for('static', filename='azureLogo.png')}}" height="10%" width="10%" align="center"/>
+        <a/>
+        </p>
+        <h4>Power by Microsoft Azure Cognitive Services</h4>
     </body>
 
 

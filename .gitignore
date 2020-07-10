@@ -6,3 +6,5 @@ bin/
 lib/
 __pycache__/
 venv/
+request/
+static/
