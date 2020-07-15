@@ -3,12 +3,53 @@ from azure.cognitiveservices.vision.customvision.training import CustomVisionTra
 from azure.cognitiveservices.vision.customvision.training.models import ImageFileCreateEntry, Region
 from msrest.authentication import ApiKeyCredentials
 import json
-from PIL import Image
+from PIL import Image, ImageDraw
 import requests
-from collections import defaultdict 
+from collections import defaultdict
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+import math
+from io import BytesIO
+import webbrowser
 
 
 
+def drawBounds(img, predictions,):
+
+    # Display the results.
+    img = Image.open(BytesIO(img))
+    draw = ImageDraw.Draw(img)
+
+   
+    img_width = img.size[0]
+    img_height = img.size[1]
+
+    crops = []
+    counter = 0
+
+
+    for i, prediction in enumerate(predictions):
+
+        if (prediction.probability*100) > 50:
+            left = math.floor(prediction.bounding_box.left * img_width)
+            top = math.floor(prediction.bounding_box.top * img_height) 
+            height = math.ceil(prediction.bounding_box.height * img_height)
+            width =  math.ceil(prediction.bounding_box.width * img_width)
+
+            top_x = left
+            top_y = top
+            bottom_x = top_x + width
+            bottom_y = top_y + height
+
+            print (counter, "\t" + prediction.tag_name + ": {0:.2f}%".format(prediction.probability * 100), left, top, height, width)
+
+            points = ((left,top), (left+width,top), (left+width,top+height), (left,top+height),(left,top))
+            draw.line(points, fill='magenta', width=2)
+            counter += 1
+            draw.text((left-10, top-10), str(round(prediction.probability*100))+'%', fill='magenta')
+       
+    img.save("static/image_results/sample.jpg")
+    #webbrowser.open("sample.jpg")
 
 def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_resource_id, img,training_key,project_name):
 
@@ -32,7 +73,7 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
 
     # Open the sample image and get back the prediction results.
     results = predictor.detect_image(project.id, publish_iteration_name, img)
-   
+    drawBounds(img, results.predictions)
 
 
     # Display the results.  
@@ -41,10 +82,10 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
         
         x = {
             "confidence":  "{0:.2f}%".format(prediction.probability * 100),
-            "bbox_left":   "{0:.2f}%".format(prediction.bounding_box.left) ,
-            "bbox_right":  "{0:.2f}%".format(prediction.bounding_box.top) ,
-            "bbox_width":  "{0:.2f}%".format( prediction.bounding_box.width),
-            "bbox_height": "{0:.2f}%".format( prediction.bounding_box.height)
+            "bbox_left":   "{0:.2f}".format(prediction.bounding_box.left) ,
+            "bbox_right":  "{0:.2f}".format(prediction.bounding_box.top) ,
+            "bbox_width":  "{0:.2f}".format( prediction.bounding_box.width),
+            "bbox_height": "{0:.2f}".format( prediction.bounding_box.height)
         }
 
         x = json.dumps(x)
@@ -95,10 +136,10 @@ def getPredictionBatch(ENDPOINT, publish_iteration_name, prediction_key, predict
         
             x = {
                 "confidence":  "{0:.2f}%".format(prediction.probability * 100),
-                "bbox_left":   "{0:.2f}%".format(prediction.bounding_box.left) ,
-                "bbox_right":  "{0:.2f}%".format(prediction.bounding_box.top) ,
-                "bbox_width":  "{0:.2f}%".format( prediction.bounding_box.width),
-                "bbox_height": "{0:.2f}%".format( prediction.bounding_box.height)
+                "bbox_left":   "{0:.2f}".format(prediction.bounding_box.left) ,
+                "bbox_right":  "{0:.2f}".format(prediction.bounding_box.top) ,
+                "bbox_width":  "{0:.2f}".format( prediction.bounding_box.width),
+                "bbox_height": "{0:.2f}".format( prediction.bounding_box.height)
             }
 
             x = json.dumps(x)

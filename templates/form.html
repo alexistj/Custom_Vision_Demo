@@ -30,9 +30,11 @@ img:hover {
           <img src="{{url_for('static', filename='manTechLogo.png')}}" height="15%" width="20%" />
           </a>
             <h1>Vehicle Object Detector </h1>
-
-     
-        <form action="/form-handler" method="POST">
+        
+        <p>
+            <img src="{{ quicktest_image }}" alt="quicktest image results Image" align="center" height="50%" width="50%">
+        </p>
+        <form action="{{url_for('handle_data')}}" method="POST">
             <div class="form-group">
             <label for="URL">URL:</label>
                 <input  class="form-control" type="text" name="URL"  placeholder="Enter URL for quick test"><br>

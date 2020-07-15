@@ -4,19 +4,23 @@ from prediction import *
 import json
 from PIL import Image
 import requests
+import os
 
 
+IMAGE_FOLDER = os.path.join('static', 'image_results')
 
 app = Flask(__name__)
-# home route
-@app.route("/")
-def hello():
-    return render_template('index.html', name = 'Jane', gender = 'Female')
+app.config['UPLOAD_FOLDER'] = IMAGE_FOLDER
+app.config["DEBUG"] = True
+
+
+
 
 # serving form web page
 @app.route("/my-form")
 def form():
-    return render_template('form.html')
+    full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'placeholder.jpg')
+    return render_template('form.html',quicktest_image = full_filename )
 
 app.run(debug = True) 
 
@@ -49,17 +53,18 @@ def handle_data():
     
     js_res  = getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_resource_id, response.content,training_key,project_name) 
 
-    print(js_res)
-
+  
     
     f = open("request/"+file_name+".json", "w")
     f.write(json.dumps(js_res))
 
 
     try:
-        return send_from_directory("request/",filename=file_name+".json", as_attachment=True)
+        send_from_directory("request/",filename=file_name+".json", as_attachment=True)
     except FileNotFoundError:
         abort(404)
+    full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'sample.jpg')
+    return render_template("form.html", quicktest_image = full_filename)
     
 
 
@@ -101,3 +106,7 @@ def handle_data_batch():
         abort(404)
     
 
+
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
