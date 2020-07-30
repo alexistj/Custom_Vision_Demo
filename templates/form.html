@@ -9,73 +9,154 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type = "text/javascript">
+
+        function toggleImage(text_button){
+             var image_display = document.getElementById("quicktest_display");
+            if(text_button.data == "View Original Image")
+            {
+                image_display.src = '../static/image_results/marked.jpg';
+            }
+
+            else{
+                image_display.src = '../static/image_results/original.jpg';
+            }
+
+        
+        
+        }
+        function toggleText(button_id)  {
+        var text = document.getElementById(button_id).firstChild;
+        text.data = text.data == "View Original Image" ? "View Marked Image" : "View Original Image";
+        toggleImage(text);
+}
+       
+  </script>
   
   <style>
     h1 {text-align: center;}
     h4 {text-align: center;}
     p {text-align: center;}
-    img {
+    ul{te}
+   .logos {
   opacity: 0.5;
 }
-img:hover {
+.logos:hover {
   opacity: 1.0;
 }
+
+body { 
+
+
+background: #3a6186; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #3a6186 , #89253e); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #89253e ,   #3a6186 ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+    
+    
+    
+    
+    }
+
+.section-content{
+  text-align: center; 
+
+}
+.contact{
+  border-radius: 25px;
+  color : #E0E0E0;
+  padding-top: 20px;
+  padding-left: 10px;
+  width: 100%;
+  width: 100vw;
+  height: 550px;
+  background: #585858
+ 
+}
+
+#mytextarea{
+    color: #000000;
+    width: 400px;
+    height: 100px;
+
+}
+
+
+input, select, textarea{
+    color:  #000000;
+}
+
+
    </style>
   
   
   </head>
 
     <body>
-            <a href = "https://www.mantech.com/" target = "_self"> 
-          <img src="{{url_for('static', filename='manTechLogo.png')}}" height="15%" width="20%" />
-          </a>
-            <h1>Vehicle Object Detector </h1>
-        
-        <p>
-            <img src="{{ quicktest_image }}" alt="quicktest image results Image" align="center" height="50%" width="50%">
-        </p>
-        <form action="{{url_for('handle_data')}}" method="POST">
-            <div class="form-group">
-            <label for="URL">URL:</label>
-                <input  class="form-control" type="text" name="URL"  placeholder="Enter URL for quick test"><br>
-            </div>
-             <label for="file_name">File name:</label>
-                <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for quick test results "><br>
-            </div>
-            <input type="submit" value="Submit">
-          </form>
+            <a class="logos" href = "https://www.mantech.com/" target = "_self"> 
+                <img src="{{url_for('static', filename='manTechLogo.png')}}" height="15%" width="20%" >
+            </a>
 
 
+     <section class="contact">
+			<div class="section-content">
+				<h1 class="section-header"> <span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Vehicle Object Detector</span></h1>
+				
+			</div>
+			<div class="contact-section">
+			    <div class="container">
 
-          
-        
-        <form action="/form-handler-batch" method="POST" enctype="multipart/form-data">
-           <label for="file">Upload New File:</label>
-           <input type=file name=file>
-            <label for="file_name">File name:</label>
-             <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for quick test results "><br>
-             <input type=submit >
-        </form>
+
+                        <div class="col-md-6 form-line">
+                            <img  id="quicktest_display" src="{{ quicktest_image }}" alt="quicktest image results Image" align="center" height="400px" width="400px">
+                        </div>
+
+                        <div class="col-md-6 form-line">
+                            <textarea id="mytextarea">{{js_res}}</textarea>
+                        </div>
+                   
+				    <p>Quick Test </p>
+                    <form action="{{url_for('handle_data')}}" method="POST">
+					    <div class="col-md-6 form-line">
+			  			    <div class="form-group">
+			  				     <label for="URL">URL:</label>
+							    <input  class="form-control" type="text" name="URL"  placeholder="Enter URL for quick test">
+                                 <input type="submit" value="Submit"  color=black >
+				  		    </div>
+			  		    </div>
+                    </form>
              
-        <p><a href = "https://azure.microsoft.com/en-us/services/search/?&OCID=AID2100131_SEM_XvI@XAAABEwD4jMh:20200710183334:s&msclkid=dfee72e3fcf6154c5a562deb488de809&ef_id=XvI@XAAABEwD4jMh:20200710183334:s&dclid=CNDo8qCpw-oCFRSswAodh1IMTg" target = "_self"> 
-        
-        <img src="{{url_for('static', filename='azureLogo.png')}}" height="10%" width="10%" align="center"/>
-        <a/>
+
+                    <p>Batch Test </p>
+                    <form  action="{{url_for('handle_data_batch')}}" method="POST">
+			  		    <div class="col-md-6 form-line">
+			  			    <div class="form-group">
+			  				    <label for="file">Upload New File:</label>
+                                <input type=file name=file>
+                                <label for="file_name">File name:</label>
+                                <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for batch test results "><br>
+                                <input type=submit color=black>
+
+			  			    </div>
+                        </div>
+			  	    </form>
+
+			    </div>
+            </div>
+             <button id = "chgImg" type="button" class="btn btn-primary btn-lg" onclick=" toggleText(this.id);"  style = "{{display}}"  >View Marked Image</button>
+
+	</section>
+
+        <p>
+            <a href = "https://azure.microsoft.com/en-us/services/search/?&OCID=AID2100131_SEM_XvI@XAAABEwD4jMh:20200710183334:s&msclkid=dfee72e3fcf6154c5a562deb488de809&ef_id=XvI@XAAABEwD4jMh:20200710183334:s&dclid=CNDo8qCpw-oCFRSswAodh1IMTg" target = "_self"> 
+                <img class="logos" src="{{url_for('static', filename='azureLogo.png')}}" height="15%" width="15%" align="center"/>
+            <a/>
         </p>
-        <h4>Power by Microsoft Azure Cognitive Services</h4>
-    </body>
+      
 
 
 
 
-    <!-- minimal styling -->
-    <style>
-        form {
-            margin: 2%;
-        }
-
-        div {
-            margin: 2% 0;
-        }
-    </style>
 </html>
+
+

@@ -6,7 +6,7 @@ import json
 from PIL import Image, ImageDraw
 import requests
 from collections import defaultdict
-import matplotlib.pyplot as plt
+
 from datetime import datetime, timedelta
 import math
 from io import BytesIO
@@ -19,6 +19,7 @@ def drawBounds(img, predictions,):
     # Display the results.
     img = Image.open(BytesIO(img))
     draw = ImageDraw.Draw(img)
+    img.save("static/image_results/original.jpg")
 
    
     img_width = img.size[0]
@@ -30,7 +31,7 @@ def drawBounds(img, predictions,):
 
     for i, prediction in enumerate(predictions):
 
-        if (prediction.probability*100) > 50:
+        if (prediction.probability*100) > 40:
             left = math.floor(prediction.bounding_box.left * img_width)
             top = math.floor(prediction.bounding_box.top * img_height) 
             height = math.ceil(prediction.bounding_box.height * img_height)
@@ -41,14 +42,14 @@ def drawBounds(img, predictions,):
             bottom_x = top_x + width
             bottom_y = top_y + height
 
-            print (counter, "\t" + prediction.tag_name + ": {0:.2f}%".format(prediction.probability * 100), left, top, height, width)
+   
 
             points = ((left,top), (left+width,top), (left+width,top+height), (left,top+height),(left,top))
-            draw.line(points, fill='magenta', width=2)
+            draw.line(points, fill='cyan', width=2)
             counter += 1
-            draw.text((left-10, top-10), str(round(prediction.probability*100))+'%', fill='magenta')
+            draw.text((left-10, top-10), str(round(prediction.probability*100))+'%', fill='white')
        
-    img.save("static/image_results/sample.jpg")
+    img.save("static/image_results/marked.jpg")
     #webbrowser.open("sample.jpg")
 
 def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_resource_id, img,training_key,project_name):
@@ -79,6 +80,7 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
     # Display the results.  
     js_res = defaultdict(list)
     for prediction in results.predictions:
+        print(prediction)
         
         x = {
             "confidence":  "{0:.2f}%".format(prediction.probability * 100),
@@ -88,7 +90,7 @@ def getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_r
             "bbox_height": "{0:.2f}".format( prediction.bounding_box.height)
         }
 
-        x = json.dumps(x)
+        
         js_res[prediction.tag_name].append(x)
         
    
