@@ -44,7 +44,7 @@ def handle_data():
         data = json.load(config_file)
 
 
-
+    #retrieve request url + keys to call end points
     url= str(request.form['URL'])
     ENDPOINT = data['endpoint']
     publish_iteration_name = "detectModel"
@@ -53,27 +53,40 @@ def handle_data():
     training_key = data["training_key"]
     project_name = data["project_name"]
 
+    #The following are preload response to speed up demonstaration
+    if url == "https://cars.blob.core.windows.net/satimg/SatImg (108).jpg":
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'original108.jpg')
+        marked_full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'marked108.jpg')
+        js_res =  open( os.path.join(app.config['UPLOAD_FOLDER'], 'marked108.txt'), 'r').read()
+        return render_template("form.html", quicktest_image = full_filename, marked_image = marked_full_filename,  js_res = js_res, display = ";")
 
- 
+    elif  url == "https://cars.blob.core.windows.net/satimg/SatImg (30).jpg":
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'original30.jpg')
+        marked_full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'marked30.jpg')
+        js_res =  open( os.path.join(app.config['UPLOAD_FOLDER'], 'marked30.txt'), 'r').read()
+        return render_template("form.html", quicktest_image = full_filename,marked_image = marked_full_filename,  js_res = js_res, display = ";")
+
+    elif url == "https://cars.blob.core.windows.net/satimg/SatImg (90).jpg":
+        full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'original90.jpg')
+        marked_full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'marked90.jpg')
+        js_res =  open( os.path.join(app.config['UPLOAD_FOLDER'], 'marked90.txt'), 'r').read()
+        return render_template("form.html", quicktest_image = full_filename, marked_image = marked_full_filename, js_res = js_res, display = ";")
+    
+    
     try:
         response = requests.get(url)
     except:
         print("error retrieving image: "+url)
         exit(-1)
     
+    #format json from custom vision endpoint 
     js_res  = getPrediction(ENDPOINT, publish_iteration_name, prediction_key, prediction_resource_id, response.content,training_key,project_name) 
     js_res =json.dumps(js_res, indent=4, separators=(". ", " = "))
- 
-    #f = open("request/"+"quicktest_image"+".json", "w")
-    #f.write(json.dumps(js_res))
-
-
-    #try:
-     #   send_from_directory("request/",filename=file_name+".json", as_attachment=True)
-    #except FileNotFoundError:
-    #    abort(404)
     full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'original.jpg')
-    return render_template("form.html", quicktest_image = full_filename, js_res = js_res, display = ";")
+    marked_full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'marked.jpg')
+
+    #send response with file name of marked and original image + json with vechicle labels 
+    return render_template("form.html", quicktest_image = full_filename,  marked_image = marked_full_filename, js_res = js_res, display = ";")
     
 
 

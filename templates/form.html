@@ -15,11 +15,11 @@
              var image_display = document.getElementById("quicktest_display");
             if(text_button.data == "View Original Image")
             {
-                image_display.src = '../static/image_results/marked.jpg';
+                image_display.src ="{{ marked_image }}";
             }
 
             else{
-                image_display.src = '../static/image_results/original.jpg';
+                image_display.src = "{{quicktest_image }}";
             }
 
         
@@ -112,7 +112,7 @@ input, select, textarea{
                         </div>
 
                         <div class="col-md-6 form-line">
-                            <textarea id="mytextarea">{{js_res}}</textarea>
+                            <textarea id="mytextarea"  placeholder="Object Detection results will appear here">{{js_res}}</textarea>
                         </div>
                    
 				    <p>Quick Test </p>
@@ -127,19 +127,7 @@ input, select, textarea{
                     </form>
              
 
-                    <p>Batch Test </p>
-                    <form  action="{{url_for('handle_data_batch')}}" method="POST">
-			  		    <div class="col-md-6 form-line">
-			  			    <div class="form-group">
-			  				    <label for="file">Upload New File:</label>
-                                <input type=file name=file>
-                                <label for="file_name">File name:</label>
-                                <input  class="form-control" type="text" name="file_name"  placeholder="Enter file name for batch test results "><br>
-                                <input type=submit color=black>
-
-			  			    </div>
-                        </div>
-			  	    </form>
+                 
 
 			    </div>
             </div>
